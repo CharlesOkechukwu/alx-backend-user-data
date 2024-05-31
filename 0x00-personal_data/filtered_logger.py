@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """module for a filtered logger datum"""
+import os
 import logging
 from typing import List
 import re
+import mysql.connector
+
 
 PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
 
@@ -44,3 +47,13 @@ def get_logger() -> logging.Logger:
     handler.setFormatter(RedactingFormatter(fields=PII_FIELDS))
     logger.addHandler(handler)
     return logger
+
+
+def get_db():
+    """return a connector to the database"""
+    return mysql.connector.connect(
+        host=os.getenv('PERSONAL_DATA_DB_HOST'),
+        database=os.getenv('PERSONAL_DATA_DB_NAME'),
+        user=os.getenv('PERSONAL_DATA_DB_USERNAME'),
+        password=os.getenv('PERSONAL_DATA_DB_PASSWORD')
+    )
