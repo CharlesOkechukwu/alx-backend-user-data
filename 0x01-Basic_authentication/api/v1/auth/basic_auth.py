@@ -2,7 +2,8 @@
 """module to implement basic auth class"""
 from .auth import Auth
 import base64
-from typing import Tuple, TypeVar
+from typing import Tuple, TypeVar, Union
+from api.v1.views.users import User
 
 
 class BasicAuth(Auth):
@@ -45,16 +46,16 @@ class BasicAuth(Auth):
         return credentials[0], ':'.join(credentials[1:])
 
     def user_object_from_credentials(self, user_email: str, user_pwd: str
-                                     ) -> TypeVar('User'):
+                                     ) -> Union[TypeVar('User'), None]:
         """return user instance from db file using credentials"""
         if user_email is None or user_pwd is None:
             return None
         if type(user_email) is not str or type(user_pwd) is not str:
             return None
-        from models.user import User
-        users = User.search({'email': user_email})
-        if users.count() == 0:
+        User.load_from_file()
+        if User.count() == 0:
             return None
+        users = User.search({'email': user_email})
         for user in users:
             if user.is_valid_password(user_pwd):
                 return user
