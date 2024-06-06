@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """module to implement basic auth class"""
 from .auth import Auth
+import base64
 
 
 class BasicAuth(Auth):
@@ -25,6 +26,7 @@ class BasicAuth(Auth):
         if type(base64_authorization_header) is not str:
             return None
         try:
-            return base64_authorization_header.encode('utf-8').decode('base64')
+            decoded = base64.b64decode(base64_authorization_header)
+            return decoded.decode('utf-8')
         except Exception:
             return None
