@@ -16,7 +16,10 @@ auth = None
 auth = os.getenv('AUTH_TYPE')
 
 
-if auth:
+if auth == 'basic_auth':
+    from api.v1.auth.basic_auth import BasicAuth
+    auth = BasicAuth()
+elif auth == 'auth':
     from api.v1.auth.auth import Auth
     auth = Auth()
 
