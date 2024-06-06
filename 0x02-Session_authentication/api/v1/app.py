@@ -32,9 +32,10 @@ def before_request() -> str:
     """filter requests"""
     if auth is not None:
         approved = ['/api/v1/status/', '/api/v1/unauthorized/',
-                    'api/v1/forbidden/']
+                    'api/v1/forbidden/', '/api/v1/auth_session/login/']
         if auth.require_auth(request.path, approved):
-            if auth.authorization_header(request) is None:
+            if auth.authorization_header(request) is None and \
+                    auth.session_cookie(request) is None:
                 abort(401)
             if auth.current_user(request) is None:
                 abort(403)
