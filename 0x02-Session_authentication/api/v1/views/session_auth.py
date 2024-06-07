@@ -2,7 +2,7 @@
 """module for implementing session login"""
 import os
 from api.v1.views import app_views
-from flask import abort, jsonify, request
+from flask import abort, jsonify, request, make_response
 from models.user import User
 
 
@@ -24,7 +24,7 @@ def login() -> str:
     from api.v1.app import auth
     session_id = auth.create_session(user[0].id)
     session_name = os.getenv('SESSION_NAME')
-    response = jsonify(user[0].to_json())
+    response = make_response(jsonify(user[0].to_json()))
     if session_name is not None and session_id:
         response.set_cookie(session_name, session_id)
     return response
