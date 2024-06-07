@@ -2,6 +2,8 @@
 """module for implementing session auth class"""
 from api.v1.auth.auth import Auth
 import uuid
+from models.user import User
+from typing import TypeVar, Union
 
 
 class SessionAuth(Auth):
@@ -21,3 +23,10 @@ class SessionAuth(Auth):
         if session_id is None or type(session_id) is not str:
             return None
         return self.user_id_by_session_id.get(session_id, None)
+
+    def current_user(self, request=None) -> Union[TypeVar('User'), None]:
+        """return a User instamce based on cookie value"""
+        User.load_from_file()
+        session_id = self.session_cookie(request)
+        user_id = self.user_id_for_session_id(session_id)
+        return User.get(user_id)
