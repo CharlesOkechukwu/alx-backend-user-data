@@ -11,7 +11,7 @@ from models.user import User
 def login() -> str:
     """return a User object based on email and password"""
     email = request.form.get('email')
-    password = request.form.get('passowrd')
+    password = request.form.get('password')
     if email is None or email == "":
         return jsonify({"error": "email missing"}), 400
     if password is None or password == "":
