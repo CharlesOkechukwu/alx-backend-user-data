@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """module for authentication and password hashing"""
 import bcrypt
-from db import DB
+from db import DB, User
 from sqlalchemy.orm.exc import NoResultFound
 
 
