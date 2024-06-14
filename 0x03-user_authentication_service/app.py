@@ -87,7 +87,7 @@ def update_password():
     except Exception:
         abort(403)
     return jsonify({"email": "{}".format(email),
-                    "message": "password updated"}), 200
+                    "message": "Password updated"}), 200
 
 
 if __name__ == "__main__":
